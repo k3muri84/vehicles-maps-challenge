@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-06-30T11:49:05Z",
+  "id": "vehicles-on-maps",
+  "duration": 60,
+  "title": "Vehicles on Google Maps Challenge",
+  "authors": "Mathias Paech",
+  "summary": "This workshop will guide you through the process of building a small app showing Vehicles on Google Maps. We at mytaxi use this task as a hiring challenge. We will cover how to get vehicle data from an API and use it to show it on the map. We will cover how to organize the code with separation of concerns in mind.\nA Google developer account is required to create a Google Maps API key but it can be created at the workshop.",
+  "source": "1yZiOiLTSxDrsvtLKsrCvj933l6U_Z1zMTJ5-H4wuOVA",
+  "theme": "android",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "Android"
+  ],
+  "tags": [
+    "android",
+    "droidcon-berlin"
+  ],
+  "feedback": "https://github.com/echorebel/codelab-vehicles-on-maps/issues",
+  "ga": "UA-52746336-1",
+  "url": "vehicles-on-maps"
+}

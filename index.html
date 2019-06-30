@@ -1,0 +1,353 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Vehicles on Google Maps Challenge</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="UA-52746336-1"
+                  id="vehicles-on-maps"
+                  title="Vehicles on Google Maps Challenge"
+                  environment="web"
+                  feedback-link="https://github.com/echorebel/codelab-vehicles-on-maps/issues">
+    
+      <google-codelab-step label="Introduction" duration="5">
+        <p class="image-container"><img style="width: 200.50px" src="img/5039599e55d22d7f.png">                 <img style="width: 178.50px" src="img/c5dfd645b9f6e5f6.png"></p>
+<p><strong>Last Updated:</strong> 2019-06-30</p>
+<h2 is-upgraded><strong>How quickly can we build an app that shows Vehicles on the Map?</strong></h2>
+<p>For mytaxi it&#39;s a basic feature to show taxis on the map so the user is assured there are some available taxis around at his service. If one applies one will face a challenge to quickly implement a map and fetch vehicle data to show them on the map.</p>
+<h3 is-upgraded><strong>Easy to use - easy to maintain</strong></h3>
+<p>Two special challenges exist in most apps.It should be easy to use for the User as it should be easy to maintain and modify by <strong>other developers</strong>. </p>
+<p>Often developers have to deal with code that they didn&#39;t wrote - or don&#39;t remember after years that they wrote this particular code. The simpler it&#39;s written the easier is it for anyone to pick up.</p>
+<h3 is-upgraded><strong>Choose the right tools</strong></h3>
+<p>To build any app you can use a lot of different building blocks. Have a reason to choose the right tool for the job instead of just following blindly what everyone else is doing. It doesn&#39;t matter in the end if you use Dagger or Koin, RxJava or LiveData. Choose them wisely and follow the YAGNI (You ain&#39;t gonna need it) principle. There is an awesome talk from <a href="https://www.infoq.com/presentations/Simple-Made-Easy/" target="_blank">Rich Hickey &#34;Simple Made Easy&#34;</a> - simple is reliable but it&#39;s not easy.</p>
+<h3 is-upgraded><strong>Have a basic architecture in mind</strong></h3>
+<p>Try to separate parts of you app so you can change and improve parts later. There are many ways to do it. One simple approach is to separate your apps into layers:</p>
+<ul>
+<li>Data (with IO and Network)</li>
+<li>Domain (Models and Business Logic)</li>
+<li>View (User facing representation)</li>
+</ul>
+<p class="image-container"><img style="width: 173.50px" src="img/c61acef37124ec7c.png"></p>
+<h2 is-upgraded><strong>What you&#39;ll build</strong></h2>
+<p>In this codelab, you&#39;re going to build a google maps app as a challenge. Your app will:</p>
+<ul>
+<li>Grab vehicle data from an API.</li>
+<li>Show them on maps</li>
+</ul>
+<p class="image-container"><img style="width: 272.62px" src="img/33f4a277e159ecd2.png"></p>
+<aside class="warning"><p><strong>Note:</strong> This is a challenge, so try to move fast and keep things simple. Choose the structure, libs and patterns you feel comfortable with. Doesn&#39;t matter if you want to use a different solution than this codelab suggests as example - it&#39;s actually appreciated to deviate from the path!</p>
+</aside>
+<aside class="special"><p><strong>Bonus:</strong> Pair up with someone on one Computer and hack together (any experience level)!</p>
+<p>Experienced guys should try/use <a href="https://en.wikipedia.org/wiki/Extreme_programming" target="_blank">XP</a> style and <a href="https://technologyconversations.com/2013/12/20/test-driven-development-tdd-example-walkthrough/" target="_blank">TDD</a> :)</p>
+</aside>
+<h2 class="checklist" is-upgraded><strong>What you&#39;ll learn</strong></h2>
+<ul class="checklist">
+<li>How to embed google maps into your app</li>
+<li>How to read data from a remote API</li>
+<li>How to show the queried vehicle data on maps</li>
+</ul>
+<p>This codelab is a challenge and you should focus on getting things done so. We will provide some snippets to get you rolling. You are still required to build all the glue code and wiring yourself. Non-relevant concepts and left out and you are free to apply patterns or libs to make you go fast.</p>
+<h2 is-upgraded><strong>What you&#39;ll need</strong></h2>
+<ul>
+<li>Android Studio and empty project</li>
+<li>Kotlin Plugin is recommended</li>
+<li>Google Developer Account to create a Google Maps API key</li>
+<li>Emulator or Device</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Setting up Maps" duration="5">
+        <h2 is-upgraded><strong>Create new Android Studio project</strong></h2>
+<p>Create a new project with the project wizard and select Google Maps Activity.</p>
+<p class="image-container"><img style="width: 592.50px" src="img/fd6b356d3138a3a0.png"></p>
+<p>Enter Name and define a package name.</p>
+<p class="image-container"><img style="width: 587.64px" src="img/ef54403752a45fa6.png"></p>
+<h2 is-upgraded><strong>Get a key for the Google Maps API</strong></h2>
+<p>To show maps we use the Google Maps SDK. You need to create a key in the developer console.</p>
+<p>Easiest way is to just click the link provided in res/values/google_maps_api.xml as it will provide already SHA-1 certificate for the Api Key.</p>
+<p><a href="https://developers.google.com/maps/documentation/android-sdk/get-api-key" target="_blank"><paper-button class="colored" raised>How to Register Manually for API Key</paper-button></a></p>
+<aside class="warning"><p><strong>Note:</strong> Your API Key will be embedded to the Manifest. The default Android Studio Project will already support to use different keys for Debug and Release Variant. If you want to use the API key with release you will need to create and add your Release Certificate Fingerprint(SHA-1) to the key in the cloud project too.</p>
+</aside>
+<h3 is-upgraded><strong>Verify your API key is working properly</strong></h3>
+<p>Instead of showing Sydney on the map, set the Marker to the CityCube where Droidcon Berlin takes place with nicer zoom level!</p>
+<pre><code>val cityCube = LatLng(52.5002212, 13.2685643)
+...
+map.moveCamera(CameraUpdateFactory.newLatLngZoom(cityCube, 14f))</code></pre>
+<p>Now just try to run the debug app and you should see a map like this:</p>
+<p class="image-container"><img style="width: 395.24px" src="img/fc23f9305eb06689.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Getting data from network" duration="10">
+        <p>In this section we will discuss how to grab the data we need to display the vehicles on the map from a demo API. The demo will just return random location within a window you specify in the request.</p>
+<h2 is-upgraded><strong>What kind of data do we expect?</strong></h2>
+<p>Our simplified Demo API will return a list of vehicles (named Points of Interest here).</p>
+<p>Every item contains an id, a coordinate, which type of fleet it belongs to - either TAXI or POOLING - and a heading: the direction facing relative to North in degrees in a cartesian plane.</p>
+<p>Example Response</p>
+<pre><code>{
+    &#34;poiList&#34;: [{
+            &#34;id&#34;: 439670,
+            &#34;coordinate&#34;: {
+                &#34;latitude&#34;: 53.46036882190762,
+                &#34;longitude&#34;: 9.909716434648558
+            },
+            &#34;fleetType&#34;: &#34;POOLING&#34;,
+            &#34;heading&#34;: 344.19529122029735
+        },
+        {
+            &#34;id&#34;: 739330,
+            &#34;coordinate&#34;: {
+                &#34;latitude&#34;: 53.668806556867445,
+                &#34;longitude&#34;: 10.019908942943804
+            },
+            &#34;fleetType&#34;: &#34;TAXI&#34;,
+            &#34;heading&#34;: 245.2005654202569
+        },
+        {
+            &#34;id&#34;: 145228,
+            &#34;coordinate&#34;: {
+                &#34;latitude&#34;: 53.58500747958201,
+                &#34;longitude&#34;: 9.807045083858156
+            },
+            &#34;fleetType&#34;: &#34;POOLING&#34;,
+            &#34;heading&#34;: 71.63840043828377
+        }
+    ]
+}</code></pre>
+<p>Now you need to generate data class from the json example, either by</p>
+<ol type="1" start="1">
+<li><a href="https://plugins.jetbrains.com/plugin/9960-json-to-kotlin-class-jsontokotlinclass-" target="_blank">JsonToKotlinClass</a> IntelliJ plugin or a similar one</li>
+<li>A online tool like <a href="https://www.json2kotlin.com/" target="_blank">json2kotlin.com</a></li>
+<li>Write from scratch manually - but why not be lazy?</li>
+</ol>
+<p>Depending on the generated classes do the tweaks like you would like to do, e.g. change class namings and/or create enum for fleet types.</p>
+<aside class="warning"><p><strong>Pro-tip:</strong> Refactoring/Renaming of attributes can cause missing or wrong deserialization!</p>
+<p>Always use serialization annotations so field names are properly mapped to data class attribute!</p>
+<p>Example with gson: @SerializedName(&#34;poiList&#34;) val vehicles: List&lt;Vehicle&gt;</p>
+</aside>
+<p>Eventually you will end up with something similar to this:</p>
+<pre><code>data class Response(
+    @SerializedName(&#34;poiList&#34;) val vehicles: List&lt;Vehicle&gt;
+)
+
+data class Vehicle(
+    @SerializedName(&#34;coordinate&#34;) val coordinate: Coordinate,
+    @SerializedName(&#34;fleetType&#34;) val fleetType: FleetType,
+    @SerializedName(&#34;heading&#34;) val heading: Double,
+    @SerializedName(&#34;id&#34;) val id: Int
+)
+
+data class Coordinate(
+    @SerializedName(&#34;latitude&#34;) val latitude: Double,
+    @SerializedName(&#34;longitude&#34;) val longitude: Double
+)
+
+enum class FleetType {
+    TAXI,
+    POOLING
+}</code></pre>
+<h2 is-upgraded><strong>How to retrieve data from the API?</strong></h2>
+<p>Now you need to implement a call to the API endpoint to retrieve the vehicle data from the network via HTTPS. Don&#39;t hurt yourself with AsyncTask - there are well tried &amp; tested http clients available that do the major lifting for you, choose one:</p>
+<ol type="1" start="1">
+<li><a href="https://square.github.io/retrofit/" target="_blank">Retrofit</a></li>
+<li><a href="https://ktor.io/" target="_blank">Ktor</a></li>
+<li><a href="https://github.com/google/volley" target="_blank">Volley</a></li>
+</ol>
+<p>Now implement a http call to this endpoint to get the vehicles: <strong>https://fake-poi-api.mytaxi.com/?p1Lat={Latitude1}&amp;p1Lon={Longitude1}&amp;p2Lat={Latitude2}&amp;p2Lon={Longitude2}</strong></p>
+<p>The parameters in { } are the geographic bounds (northeast and southwest) for the request. For testing purposes you can use the area around droidcon::</p>
+<p>Northeast: 52.51570426234859, 13.287037834525108</p>
+<p>Southwest: 52.48417497476959, 13.251724876463415</p>
+<h3 is-upgraded>Example: <strong>How to accomplish it with Retrofit</strong></h3>
+<p>Retrofit is used by many Android devs and it&#39;s pretty neat to just write a interface definition of the endpoint. </p>
+<aside class="warning"><p>The latest version 2.6.0 also supports coroutines natively - how awesome is this!</p>
+<p><strong>But be aware the support for null values is not working yet!</strong></p>
+</aside>
+<p><code>Add dependencies to</code></p>
+<pre><code>implementation &#39;com.squareup.retrofit2:retrofit:2.6.0&#39;
+implementation &#39;com.squareup.retrofit2:converter-gson:2.5.0&#39;
+
+implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-M2&#39;</code></pre>
+<p>Let&#39;s have a look:</p>
+<pre><code>interface VehicleService {
+    @GET(&#34;.&#34;)
+    suspend fun listVehicles(
+        @Query(&#34;p1Lat&#34;) northEastLat: Double,
+        @Query(&#34;p1Lon&#34;) northEastLon: Double,
+        @Query(&#34;p2Lat&#34;) southWestLat: Double,
+        @Query(&#34;p2Lon&#34;) southWestLon: Double
+    ): Response
+}</code></pre>
+<p>To create a instance of this service you need to specify the base url,  a converter so retrofit knows how to deserialize the response of the api and of course the interface you just created before. The new Version 2.6.0 can use a suspend function and return the result directly instead of passing the Call.</p>
+<pre><code>Retrofit.Builder()
+        .baseUrl(&#34;https://fake-poi-api.mytaxi.com/&#34;)
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder().create()
+            )
+        )
+        .build()
+        .create(VehicleService::class.java)</code></pre>
+<aside class="warning"><p><strong>Tip: </strong>Instead of creating instance of GsonConverter and GsonBuilder in place (for sake of understanding) it&#39;s better to provide and inject it via any IoC/DI solution (e.g. Dagger, Koin) - this way you can configure/provide it on an application level and it&#39;s also easier to read.</p>
+</aside>
+<h2 is-upgraded><strong>Try it out</strong></h2>
+<p>Now go ahead - implement and test the call.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create a Repository" duration="5">
+        <p>Remember the introduction where we talked about app layer separation?</p>
+<p>We don&#39;t want the a direct dependency from our view layer to our network layer. Separation will benefit us with easier maintenance, testability and being future proof - to be able to modernize layer by layer.</p>
+<p>The Repository pattern is an abstraction of your domain data storage - it can be just in memory, realtime data, cached network data, or even a database or any combination of them.</p>
+<p>It acts as a interface to your domain layer.</p>
+<p class="image-container"><img style="width: 188.90px" src="img/c61acef37124ec7c.png"></p>
+<p>Your task is now to think about the interface the repository will need so we can display vehicles on the map and go ahead and implement it!</p>
+<p>One simple implementation could be:</p>
+<pre><code>object VehicleRepository {
+    suspend fun getVehicles() = VehicleApi.listVehicles()
+}</code></pre>
+<p>The cool thing about this is you really can follow the YAGNI principle here - in the beginning you keep is simple and direct - any request to the repository will call the API directly. If there is need later you can change the implementation to add persistence as a cache or database or even some other logic without changing the use in the view layer.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Wire domain and view layer" duration="10">
+        <p>Now that we have the data available in the Repository let&#39;s do one more step to prepare using that data in the view. Good practice is to contain view data in a separate container no matter if you use MVVM or MVP.</p>
+<aside class="warning"><p><strong>Avoid common mistakes:</strong></p>
+<ul>
+<li>Don&#39;t let ViewModels or Presenters know about Android framework classes</li>
+<li>If you use ViewModel - never let in know a view, context, activity or subscribe to LiveData - Leaks will happen! If you need really need context use the AndroidViewModel instead.</li>
+<li>Don&#39;t put all the logic in View/Activity/Fragments - keep it to a minimum and move it to ViewModel / Presenter / Interactors instead</li>
+</ul>
+</aside>
+<p>Now it&#39;s your turn to implement a ViewModel and/or Presenter to provide data from the repository to the view!</p>
+<h2 is-upgraded><strong>LiveData and Coroutines</strong></h2>
+<p>Our example will use an alpha version of the lifecycle extenstions where Coroutine support was added. The first dependency will add ViewModel and LiveData. The second dependency will add a extension builder function to call suspend function and return LiveData.</p>
+<p>Add to <code>app/build.gradle</code></p>
+<pre><code>implementation &#34;androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01&#34;
+
+implementation &#34;androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha01&#34;</code></pre>
+<p>A simple ViewModel implementation could be:</p>
+<pre><code>class VehicleViewModel(vehicleRepository: VehicleRepository): ViewModel(){
+    // use IO for network, live data will auto switch to UI thread
+    val vehicles = liveData(Dispatchers.IO) {
+        emit(vehicleRepository.getVehicles())
+    }
+}</code></pre>
+<p>This is much shorter than the usual way:</p>
+<pre><code>private val vehicles: MutableLiveData&lt;List&lt;String&gt;&gt; by lazy {
+    MutableLiveData&lt;List&lt;Vehicles&gt;&gt;().also {
+        loadVehicles()
+    }
+}
+
+fun getVehicles(): LiveData&lt;List&lt;String&gt;&gt; {
+    return vehicles
+}
+
+private fun loadVehicles() {
+    // Do an async operation to fetch vehicles...
+}</code></pre>
+<p>Now you need to access your data in your view. If you use our LiveData approach it could be as easy as:</p>
+<pre><code>vehicleViewModel.vehicles.observe(this, Observer&lt;Response&gt; { response -&gt;
+    // TODO add markers to map
+})</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Adding Markers on Map" duration="10">
+        <p>Now we can jump to the final step to add markers on the map in our view.</p>
+<p>Our goal is to place the vehicles to their proper location and also let them face the direction they are reporting to the system. To do that we can create new <a href="https://developers.google.com/maps/documentation/android-sdk/marker" target="_blank">MarkerOptions</a>.The only mandatory property on MarkerOptions is position, but we will need more.</p>
+<h2 is-upgraded><strong>Using custom icons</strong></h2>
+<p class="image-container"><img style="width: 54.00px" src="img/bf75a19a7d0f0406.png"> <img style="width: 54.00px" src="img/878c6926819ca488.png"></p>
+<p>Download the icons from <a href="https://www.dropbox.com/s/4jz9zn8bia9aoa0/batmobile.zip?dl=0" target="_blank">here</a> or pick/create your own and put the Icons to your src/main/res/ folder.</p>
+<p>Since our API specify different fleet types let&#39;s apply the icon correspondingly:</p>
+<pre><code>markerOptions.icon(
+    BitmapDescriptorFactory.fromResource(
+        when {
+            vehicle.fleetType == FleetType.TAXI -&gt; R.drawable.batmobil
+            else -&gt; R.drawable.unlicensed
+        }
+    )
+)</code></pre>
+<h2 is-upgraded><strong>Apply custom rotation to show heading of the car.</strong></h2>
+<p>To be able to rotate the car properly you need to center the anchor point of the icon - so it does rotate around its own axis rather around one corner of the image.</p>
+<pre><code>markerOptions.anchor(0.5f, 0.5f)
+             .rotation(vehicle.heading.toFloat())
+</code></pre>
+<h2 is-upgraded><strong>Try it out</strong></h2>
+<p>Now build your app and run it, you should end up with something like this:</p>
+<p class="image-container"><img style="width: 439.87px" src="img/39d8b50ff552e6bf.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Bonus Challenge: Refresh data" duration="10">
+        <p>To improve the app we should be able to poll updated data from the API.</p>
+<p>You should refactor the app and ideally decouple the refresh logic into an Interactor / Use Case.</p>
+<p>We won&#39;t give any hints now.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Congratulations" duration="5">
+        <p>Congratulations, you&#39;ve made it through the challenge! </p>
+<p>You went through building and wiring basic building blocks of any app. You integrated Google Maps and your app is capable of loading and showing &#34;live&#34; data.</p>
+<p>You already went through the critical steps to pass through the mytaxi challenge!</p>
+<h2 is-upgraded><strong>What&#39;s next?</strong></h2>
+<p>Challenge yourself by:</p>
+<ul>
+<li>Add the user location and show vehicle data around the user</li>
+<li>Use same view model to display a list with cars sorted by distance to the user</li>
+<li>Refresh the data periodically</li>
+<li>Get your solution reviewed by friends or colleagues / or send it to <a href="mailto:m.paech@mytaxi.com" target="_blank">m.paech@mytaxi.com</a></li>
+<li>Feel free to apply for mytaxi ;)</li>
+</ul>
+<h2 is-upgraded><strong>Further reading / viewing</strong></h2>
+<ul>
+<li><a href="https://medium.com/corouteam/exploring-kotlin-coroutines-and-lifecycle-architectural-components-integration-on-android-c63bb8a9156f" target="_blank">Exploring new Coroutines and Lifecycle Architectural Components integration on Android</a></li>
+<li><a href="https://proandroiddev.com/suspend-what-youre-doing-retrofit-has-now-coroutines-support-c65bd09ba067" target="_blank">Suspend what you&#39;re doing: Retrofit has now Coroutines support!</a></li>
+<li><a href="https://mytaxi.com/uk/career/" target="_blank">Design the future of mobility with mytaxi!</a></li>
+</ul>
+<h2 is-upgraded><strong>Reference docs</strong></h2>
+<ul>
+<li><a href="https://developers.google.com/maps/documentation/android-sdk/intro" target="_blank">Google Maps Android SDK</a></li>
+<li><a href="https://square.github.io/retrofit/" target="_blank">Retrofit</a></li>
+<li><a href="https://github.com/square/retrofit/tree/master/retrofit-converters/gson" target="_blank">Gson Converter</a></li>
+<li><a href="https://github.com/Kotlin/kotlinx.coroutines" target="_blank">kotlinx.coroutines</a></li>
+<li><a href="https://developer.android.com/topic/libraries/architecture/livedata" target="_blank">LiveData Overview</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>
