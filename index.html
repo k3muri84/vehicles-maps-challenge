@@ -28,15 +28,17 @@
                   feedback-link="https://github.com/echorebel/codelab-vehicles-on-maps/issues">
     
       <google-codelab-step label="Introduction" duration="5">
-        <p class="image-container"><img style="width: 200.50px" src="img/5039599e55d22d7f.png">                 <img style="width: 178.50px" src="img/c5dfd645b9f6e5f6.png"></p>
+        <p class="image-container"><img style="width: 200.50px" src="img/5039599e55d22d7f.png">                 <img style="width: 178.50px" src="img/c5dfd645b9f6e5f6.png"> <img style="width: 523.00px" src="img/924a36dd7ebe18eb.png"></p>
 <p><strong>Last Updated:</strong> 2019-06-30</p>
+<p><a href="https://bit.ly/2YxRJWY" target="_blank">https://bit.ly/2YxRJWY</a></p>
+<p><a href="https://echorebel.github.io/vehicles-maps-challenge/" target="_blank">https://echorebel.github.io/vehicles-maps-challenge/</a></p>
 <h2 is-upgraded><strong>How quickly can we build an app that shows Vehicles on the Map?</strong></h2>
 <p>For mytaxi it&#39;s a basic feature to show taxis on the map so the user is assured there are some available taxis around at his service. If one applies one will face a challenge to quickly implement a map and fetch vehicle data to show them on the map.</p>
 <h3 is-upgraded><strong>Easy to use - easy to maintain</strong></h3>
 <p>Two special challenges exist in most apps.It should be easy to use for the User as it should be easy to maintain and modify by <strong>other developers</strong>. </p>
-<p>Often developers have to deal with code that they didn&#39;t wrote - or don&#39;t remember after years that they wrote this particular code. The simpler it&#39;s written the easier is it for anyone to pick up.</p>
+<p>Often developers have to deal with code that they didn&#39;t wrote - or don&#39;t remember after years that they wrote this particular code. The simpler it&#39;s written the easier it is for anyone to pick up.</p>
 <h3 is-upgraded><strong>Choose the right tools</strong></h3>
-<p>To build any app you can use a lot of different building blocks. Have a reason to choose the right tool for the job instead of just following blindly what everyone else is doing. It doesn&#39;t matter in the end if you use Dagger or Koin, RxJava or LiveData. Choose them wisely and follow the YAGNI (You ain&#39;t gonna need it) principle. There is an awesome talk from <a href="https://www.infoq.com/presentations/Simple-Made-Easy/" target="_blank">Rich Hickey &#34;Simple Made Easy&#34;</a> - simple is reliable but it&#39;s not easy.</p>
+<p>To build any app you can use a lot of different existing building blocks. Have a reason to choose the right tool for the job instead of just following blindly what everyone else is doing. It doesn&#39;t matter in the end if you use Dagger or Koin, RxJava, Coroutines or LiveData. Choose them wisely and try to follow the YAGNI (You ain&#39;t gonna need it) principle. There is an awesome talk from <a href="https://www.infoq.com/presentations/Simple-Made-Easy/" target="_blank">Rich Hickey &#34;Simple Made Easy&#34;</a> - simple is reliable but it&#39;s not easy.</p>
 <h3 is-upgraded><strong>Have a basic architecture in mind</strong></h3>
 <p>Try to separate parts of you app so you can change and improve parts later. There are many ways to do it. One simple approach is to separate your apps into layers:</p>
 <ul>
@@ -173,7 +175,8 @@ enum class FleetType {
 <li><a href="https://ktor.io/" target="_blank">Ktor</a></li>
 <li><a href="https://github.com/google/volley" target="_blank">Volley</a></li>
 </ol>
-<p>Now implement a http call to this endpoint to get the vehicles: <strong>https://fake-poi-api.mytaxi.com/?p1Lat={Latitude1}&amp;p1Lon={Longitude1}&amp;p2Lat={Latitude2}&amp;p2Lon={Longitude2}</strong></p>
+<p>Now implement a http call to this endpoint to get the vehicles:</p>
+<p><strong>https://fake-poi-api.mytaxi.com/?p1Lat={Latitude1}&amp;p1Lon={Longitude1}&amp;p2Lat={Latitude2}&amp;p2Lon={Longitude2}</strong></p>
 <p>The parameters in { } are the geographic bounds (northeast and southwest) for the request. For testing purposes you can use the area around droidcon::</p>
 <p>Northeast: 52.51570426234859, 13.287037834525108</p>
 <p>Southwest: 52.48417497476959, 13.251724876463415</p>
@@ -211,6 +214,9 @@ implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-M2&#3
 </aside>
 <h2 is-upgraded><strong>Try it out</strong></h2>
 <p>Now go ahead - implement and test the call.</p>
+<pre><code>CoroutineScope(Dispatchers.IO).launch {
+    val response = VehicleRepository.getVehicles()
+}</code></pre>
 
 
       </google-codelab-step>
@@ -220,7 +226,7 @@ implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-M2&#3
 <p>We don&#39;t want the a direct dependency from our view layer to our network layer. Separation will benefit us with easier maintenance, testability and being future proof - to be able to modernize layer by layer.</p>
 <p>The Repository pattern is an abstraction of your domain data storage - it can be just in memory, realtime data, cached network data, or even a database or any combination of them.</p>
 <p>It acts as a interface to your domain layer.</p>
-<p class="image-container"><img style="width: 188.90px" src="img/c61acef37124ec7c.png"></p>
+<p class="image-container"><img style="width: 201.35px" src="img/e005cc286c420b73.png"></p>
 <p>Your task is now to think about the interface the repository will need so we can display vehicles on the map and go ahead and implement it!</p>
 <p>One simple implementation could be:</p>
 <pre><code>object VehicleRepository {
@@ -242,7 +248,9 @@ implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0-M2&#3
 </aside>
 <p>Now it&#39;s your turn to implement a ViewModel and/or Presenter to provide data from the repository to the view!</p>
 <h2 is-upgraded><strong>LiveData and Coroutines</strong></h2>
-<p>Our example will use an alpha version of the lifecycle extenstions where Coroutine support was added. The first dependency will add ViewModel and LiveData. The second dependency will add a extension builder function to call suspend function and return LiveData.</p>
+<p>Our example will use an alpha version of the lifecycle extensions where Coroutine support was added. The first dependency will add ViewModel and LiveData. The second dependency will add a extension builder function to call suspend function and return LiveData.</p>
+<aside class="warning"><p>Ideally you would even introduce another layer between ViewModel and Repository with an Interactor / Use Case - but here it would potentially identical to our Repository implementation.</p>
+</aside>
 <p>Add to <code>app/build.gradle</code></p>
 <pre><code>implementation &#34;androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01&#34;
 
@@ -294,8 +302,7 @@ private fun loadVehicles() {
 <h2 is-upgraded><strong>Apply custom rotation to show heading of the car.</strong></h2>
 <p>To be able to rotate the car properly you need to center the anchor point of the icon - so it does rotate around its own axis rather around one corner of the image.</p>
 <pre><code>markerOptions.anchor(0.5f, 0.5f)
-             .rotation(vehicle.heading.toFloat())
-</code></pre>
+             .rotation(vehicle.heading.toFloat())</code></pre>
 <h2 is-upgraded><strong>Try it out</strong></h2>
 <p>Now build your app and run it, you should end up with something like this:</p>
 <p class="image-container"><img style="width: 439.87px" src="img/39d8b50ff552e6bf.png"></p>
@@ -303,18 +310,18 @@ private fun loadVehicles() {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Bonus Challenge: Refresh data" duration="10">
-        <p>To improve the app we should be able to poll updated data from the API.</p>
+      <google-codelab-step label="Bonus Challenge: Error Handling and Refreshing data" duration="10">
+        <p>To improve the app we should be able to refresh data from the API and deal with errors.</p>
 <p>You should refactor the app and ideally decouple the refresh logic into an Interactor / Use Case.</p>
 <p>We won&#39;t give any hints now.</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Congratulations" duration="5">
-        <p>Congratulations, you&#39;ve made it through the challenge! </p>
+      <google-codelab-step label="Congratulations" duration="0">
+        <p>Congratulations, you&#39;ve made it through the challenge!</p>
 <p>You went through building and wiring basic building blocks of any app. You integrated Google Maps and your app is capable of loading and showing &#34;live&#34; data.</p>
-<p>You already went through the critical steps to pass through the mytaxi challenge!</p>
+<p>You already went halfway through the critical steps to pass through the mytaxi coding challenge!</p>
 <h2 is-upgraded><strong>What&#39;s next?</strong></h2>
 <p>Challenge yourself by:</p>
 <ul>
@@ -322,7 +329,7 @@ private fun loadVehicles() {
 <li>Use same view model to display a list with cars sorted by distance to the user</li>
 <li>Refresh the data periodically</li>
 <li>Get your solution reviewed by friends or colleagues / or send it to <a href="mailto:m.paech@mytaxi.com" target="_blank">m.paech@mytaxi.com</a></li>
-<li>Feel free to apply for mytaxi ;)</li>
+<li>Feel free to <a href="https://mytaxi.com/uk/career" target="_blank">apply for mytaxi</a>, but make sure you are using DI and write Unit Tests ;)</li>
 </ul>
 <h2 is-upgraded><strong>Further reading / viewing</strong></h2>
 <ul>
